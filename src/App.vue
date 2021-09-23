@@ -4,56 +4,44 @@
     <br />
     {{ message }}
     <HelloWorld :msg="msg" :is-show="show" />
-    <input
-      type="text"
-      placeholder="text"
-      @keydown="blurMethod"
-      @keyup="focusMethod"
-      @blur="blurMethod"
-      @focus="focusMethod"
-    />
-    <button v-on:click="c = a + b">Click</button>
-    <button @click="doThat">Clear</button>
-    {{ c }}
     <calc />
-    <br />
-    2 + 2 = {{ 2 + 2 }}
-    <br />
-    msg длина = {{ msg.length }}
-    <br />
-    msg = {{ msg.split().reverse() }}
+    {{ myColletcion }}
+    <div v-for="(item, index) in myColletcion" :key="index">
+      {{ index }} - {{ item }}
+    </div>
   </div>
 </template>
 
 <script>
-import Calc from "./components/Calc.vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import Calc from './components/Calc.vue'
+import HelloWorld from './components/HelloWorld.vue'
 export default {
-  name: "App",
+  name: 'App',
   components: {
     HelloWorld,
-    Calc,
+    Calc
   },
   data: () => ({
-    message: "Привет, VUE",
+    message: 'Привет, VUE',
     show: true,
     c: 0,
     a: 1,
     b: 1,
-    msg: "Welcome to Your Vue.js App",
+    msg: 'Welcome to Your Vue.js App',
+    myColletcion: [1, 2, 3, 4, 5, 6, 7]
   }),
   methods: {
-    doThat() {
-      this.c = 0;
+    doThat () {
+      this.c = 0
     },
-    blurMethod() {
-      console.log("blur");
+    blurMethod () {
+      console.log('blur')
     },
-    focusMethod() {
-      console.log("focus");
-    },
-  },
-};
+    focusMethod () {
+      console.log('focus')
+    }
+  }
+}
 </script>
 
 <style lang="scss">
