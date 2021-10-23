@@ -1,8 +1,8 @@
 <template>
   <div class="calc">
     <div class="main">
-      <input v-model="op1" type="number" />
-      <input v-model="op2" type="number" />
+      <input v-model.number="op1" type="number" name="operand1" />
+      <input v-model.number="op2" type="number" name="operand2" />
       <br />
       Результат = {{ result }}
       <br />
@@ -19,37 +19,35 @@
         v-for="operand in operands"
         :key="operand"
         :title="operand"
+        :name="operand"
         @click="calculate(operand)"
       >
         {{ operand }}
       </button>
     </div>
   <div class="virtualKeyboard">
-    <input type="checkbox" id="checkbox" v-model="check"/>
+    <input type="checkbox" id="checkbox" v-model="check" name="showKeyboard"/>
 <label for="checkbox">Отобразить экранную клавиатуру</label>
 <br>
 <div class="keys" v-show="check">
 <button v-for="value in numbers"
 :key="value"
 :title="value"
-@click="setValue (value)"
+name="keys"
+@click="setValue(value)"
 >
 {{ value }}
 </button>
-<button @click="delSimbol ()">
+<button @click="delSimbol ()" name="delSimbol">
 ←
 </button>
-</div>
-<input type="radio" name='operand' value="op1" v-model="selectOp"/>
+<br>
+<input type="radio" name='checkOperand1' value="op1" v-model="selectOp"/>
 <label for="one">Операнд 1</label>
-<input type="radio" name='operand' value="op2" v-model="selectOp"/>
+<input type="radio" name='checkOperand2' value="op2" v-model="selectOp"/>
 <label for="two">Операнд 2</label>
+</div>
   </div>
-    <div class="logs">
-      <div v-for="(log, id) in logs" :key="id">
-        {{ log }}
-      </div>
-    </div>
   </div>
 </template>
 
@@ -58,23 +56,15 @@ export default {
   name: 'Calculator',
   data () {
     return {
-      op1: 0,
-      op2: 0,
+      op1: '',
+      op2: '',
       selectOp: 'op1',
       result: 0,
       fibResult: 0,
       error: '',
       operands: ['+', '-', '/', '*', '^', '//'],
       numbers: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-      check: false,
-      myColletcion: [1, 2, 3, 4, 5, 6, 7],
-      logs: {},
-      user: {
-        role: 'Admin',
-        grant: {
-          isAdmin: true
-        }
-      }
+      check: false
     }
   },
   methods: {
@@ -82,10 +72,10 @@ export default {
       return n <= 1 ? n : this.fib(n - 1) + this.fib(n - 2)
     },
     setValue (value) {
-      this[this.selectOp] += value
+      this[this.selectOp] = parseInt(this[this.selectOp] + value)
     },
     delSimbol () {
-      this[this.selectOp] = String(this[this.selectOp]).slice(0, -1)
+      this[this.selectOp] = parseInt(String(this[this.selectOp]).slice(0, -1))
     },
     calculate (operation = '+') {
       this.error = ''
@@ -115,7 +105,7 @@ export default {
     },
     add () {
       const { op1, op2 } = this
-      this.result = +op1 + +op2
+      this.result = op1 + op2
       this.fibResult = this.fib1 + this.fib2
     },
     sub () {
@@ -156,9 +146,6 @@ export default {
     },
     fib2 () {
       return this.fib(this.op2)
-    },
-    arryFilter () {
-      return this.myColletcion.filter((i) => i > 5)
     }
   }
 }
